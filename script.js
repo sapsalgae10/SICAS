@@ -74,6 +74,44 @@ function showResult() {
 }
 
 
+function shareResult() {
+  const score = document.getElementById("score").textContent;
+  const shareData = {
+    title: 'SICAS | AI 시대 생존 지수 진단',
+    text: `나의 AI 시대 생존 확률은 ${score}입니다! 당신의 생존 지수도 확인해보세요.`,
+    url: window.location.href, // 현재 사이트 주소
+  };
+
+
+  
+
+  // 모바일 공유 API 지원 여부 확인
+  if (navigator.share) {
+    navigator.share(shareData)
+      .then(() => console.log('공유 성공'))
+      .catch((error) => console.log('공유 실패', error));
+  } else {
+    // 모바일 공유를 지원하지 않는 브라우저(PC 등)는 링크 복사
+    copyToClipboard(shareData.url);
+  }
+}
+
+// 링크 복사 함수
+function copyToClipboard(text) {
+  navigator.clipboard.writeText(text).then(() => {
+    const toast = document.getElementById("shareToast");
+    toast.classList.remove("hidden");
+    
+    setTimeout(() => {
+      toast.classList.add("hidden");
+    }, 2000);
+  });
+} 
+
+
+
+
+
 
 // 화면 전환 함수
 function setMode(mode) {
