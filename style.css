@@ -195,6 +195,9 @@ img {
   background: #f1f5f9; border-radius: 16px; font-size: 0.95rem;
 }
 
+
+
+
 /* --- 푸터 기본 스타일 --- */
 .footer {
   background: #272727;
@@ -470,6 +473,7 @@ img {
   padding: 60px 40px;
   text-align: center;
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
+  padding-bottom: 80px; /* 하단 여백을 조금 더 주어 푸터와 간격을 벌립니다 */
 }
 
 /* 점수 텍스트 (화이트 배경에서도 잘 보이도록) */
@@ -563,11 +567,7 @@ img {
   box-shadow: 0 10px 20px rgba(0,0,0,0.2);
 }
 
-.result-actions .primary-btn:hover {
-  background: #60a5fa;
-  color: #fff;
-  transform: translateY(-3px);
-}
+
 
 
 
@@ -608,4 +608,28 @@ img {
   opacity: 0;
   transform: translate(-50%, 20px);
   pointer-events: none;
+}
+
+
+
+
+/* style.css 파일 최하단에 붙여넣으세요 */
+
+/* 차트가 그려질 캔버스의 높이를 명시적으로 고정 */
+.chart-container {
+    position: relative;
+    width: 100% !important;
+    height: 400px !important; /* 높이를 0이 아닌 값으로 강제 고정 */
+    min-height: 350px;
+}
+
+canvas {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+/* 공유하기 토스트 메시지 위치 조정 */
+.toast {
+    background: #3b82f6 !important;
+    font-weight: 700;
 }

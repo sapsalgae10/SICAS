@@ -113,18 +113,32 @@ function copyToClipboard(text) {
 
 
 
-// 화면 전환 함수
+// script.js 내의 setMode 함수를 찾아서 이 내용으로 덮어쓰세요.
 function setMode(mode) {
-  state.mode = mode;
-  el.home.classList.toggle("hidden", mode !== "home");
-  el.dataReport.classList.toggle("hidden", mode !== "home");
-  
-  if (el.resultContainer) {
-    el.resultContainer.classList.toggle("hidden", mode === "home");
-  }
+    state.mode = mode;
+    
+    // 섹션별 표시/숨김 제어
+    el.home.classList.toggle("hidden", mode !== "home");
+    el.dataReport.classList.toggle("hidden", mode !== "home");
+    
+    if (el.resultContainer) {
+        el.resultContainer.classList.toggle("hidden", mode === "home");
+    }
 
-  el.test.classList.toggle("hidden", mode !== "test");
-  el.result.classList.toggle("hidden", mode !== "result");
+    el.test.classList.toggle("hidden", mode !== "test");
+    el.result.classList.toggle("hidden", mode !== "result");
+
+    // [핵심] 홈으로 돌아왔을 때 차트가 안 보인다면 다시 렌더링 시도
+    if (mode === "home") {
+        setTimeout(() => {
+            // 기존에 정의된 차트 렌더링 함수를 다시 호출
+            if (typeof renderAllCharts === "function") {
+                renderAllCharts();
+            }
+        }, 100); // DOM이 그려질 시간을 0.1초 줍니다.
+    }
+
+    window.scrollTo(0, 0);
 }
 
 function startTest() {
@@ -206,6 +220,12 @@ window.startTest = startTest;
 window.resetTest = resetTest;
 
 function renderAllCharts() {
+  // 이미 차트가 있다면 파괴하고 새로 그림 (중복 생성 방지)
+    const chartIds = ['lineChart', 'barChart', 'impactChart'];
+    chartIds.forEach(id => {
+        const chartExist = Chart.getChart(id); 
+        if (chartExist) chartExist.destroy();
+    });
   const gridColor = 'rgba(229, 231, 235, 0.5)';
 
   new Chart(document.getElementById('lineChart'), {
@@ -217,7 +237,7 @@ function renderAllCharts() {
         borderColor: '#3b82f6',
         backgroundColor: 'rgba(59, 130, 246, 0.1)',
         fill: true, tension: 0.4
-      }]
+      }]     
     },
     options: {
       responsive: true,
